@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Admin Dashboard | Beauty Center</title>
+  <meta name="description" content="Admin dashboard to manage services, products, offers, and posts." />
+  <link rel="canonical" href="https://beautycenter-sharm.com/en/admin.html" />
+  <link rel="alternate" hreflang="ar" href="https://beautycenter-sharm.com/ar/ar/admin.html" />
+  <link rel="alternate" hreflang="en" href="https://beautycenter-sharm.com/en/en/admin.html" />
+  <link rel="icon" href="/favicon.svg" />
+  <link rel="stylesheet" href="/assets/css/style.css" />
+  <script id="jsonld" type="application/ld+json"></script>
+
+</head>
+<body>
+<header class="top">
+  <div class="container nav">
+    <div class="row" style="gap:10px">
+      <img class="logoImg" src="/assets/img/logo.png" alt="Beauty Center logo" onerror="this.style.display='none'">
+      <div class="brand">Beauty Center</div>
+    </div>
+
+    <nav class="menu">
+      <a href="/en/index.html">Home</a>
+      <a href="/en/about.html">About</a>
+      <a href="/en/shop.html">Shop</a>
+      <a href="/en/offers.html">Offers</a>
+      <a href="/en/blog.html">Blog</a>
+      <a href="/en/contact.html">Contact</a>
+      <a class="btn" href="/ar/admin.html">AR</a>
+    </nav>
+
+    <a class="btn primary" href="/en/index.html">Home</a>
+  </div>
+</header>
+
+<div class="container" style="padding:16px 0">
+  <div class="card">
+    <h1 style="margin:0 0 10px">Admin Dashboard</h1>
+
+    <div id="loginBox" class="card" style="margin-top:12px">
+      <h3 style="margin:0 0 8px">Login</h3>
+      <div class="grid">
+        <div><label>Email</label><input id="email" value="admin@beautycenter-sharm.com"></div>
+        <div><label>Password</label><input id="password" type="password" value="Admin@12345"></div>
+      </div>
+      <button class="btn primary" style="margin-top:10px" onclick="login()">Login</button>
+      <p class="muted" id="loginMsg"></p>
+    </div>
+
+    <div id="appBox" style="display:none;margin-top:12px">
+      <div class="row">
+        <button class="btn" onclick="logout()">Logout</button>
+        <button class="btn primary" onclick="refreshAll()">Refresh</button>
+      </div>
+
+      <hr/>
+
+      <div class="grid3">
+        <div class="card"><b>Services</b><div class="muted" id="kServices">-</div></div>
+        <div class="card"><b>Products</b><div class="muted" id="kProducts">-</div></div>
+        <div class="card"><b>Orders</b><div class="muted" id="kOrders">-</div></div>
+      </div>
+
+      <div class="grid3" style="margin-top:12px">
+        <div class="card"><b>Bookings</b><div class="muted" id="kBookings">-</div></div>
+        <div class="card"><b>Offers</b><div class="muted" id="kOffers">-</div></div>
+        <div class="card"><b>Posts</b><div class="muted" id="kPosts">-</div></div>
+      </div>
+
+      <hr/>
+
+      <div class="card">
+        <h3 style="margin:0 0 10px">Settings</h3>
+        <div class="grid">
+          <div><label>Name AR</label><input id="set_name_ar"></div>
+          <div><label>Name EN</label><input id="set_name_en"></div>
+          <div><label>Phone</label><input id="set_phone"></div>
+          <div><label>Email</label><input id="set_email"></div>
+          <div><label>Address AR</label><input id="set_address_ar"></div>
+          <div><label>Address EN</label><input id="set_address_en"></div>
+          <div><label>Facebook</label><input id="set_facebook"></div>
+          <div><label>Instagram</label><input id="set_instagram"></div>
+        </div>
+        <button class="btn primary" style="margin-top:10px" onclick="saveSettings()">Save Settings</button>
+      </div>
+
+      <hr/>
+
+      <div class="card">
+        <h3 style="margin:0 0 10px">Add Service</h3>
+        <div class="grid">
+          <div><label>Title AR</label><input id="s_ar"></div>
+          <div><label>Title EN</label><input id="s_en"></div>
+          <div><label>Price</label><input id="s_price" type="number"></div>
+          <div><label>Image</label><input id="s_img" type="file" accept="image/*" /><div class="muted" id="s_img_url"></div></div>
+        </div>
+        <label>Description AR</label><textarea id="s_desc_ar"></textarea>
+        <label>Description EN</label><textarea id="s_desc_en"></textarea>
+        <button class="btn primary" style="margin-top:10px" onclick="createService()">Save Service</button>
+      </div>
+
+      <div class="card" style="margin-top:12px">
+        <h3 style="margin:0 0 10px">Services List</h3>
+        <div id="servicesTable"></div>
+      </div>
+
+      <hr/>
+
+      <div class="card">
+        <h3 style="margin:0 0 10px">Add Product</h3>
+        <div class="grid">
+          <div><label>Title AR</label><input id="p_ar"></div>
+          <div><label>Title EN</label><input id="p_en"></div>
+          <div><label>Price</label><input id="p_price" type="number"></div>
+          <div><label>Sale (optional)</label><input id="p_sale" type="number"></div>
+        </div>
+        <label>Description AR</label><textarea id="p_desc_ar"></textarea>
+        <label>Description EN</label><textarea id="p_desc_en"></textarea>
+        <div style="margin-top:10px">
+          <label>Image</label>
+          <input id="p_img" type="file" accept="image/*" />
+          <div class="muted" id="p_img_url"></div>
+        </div>
+        <button class="btn primary" style="margin-top:10px" onclick="createProduct()">Save Product</button>
+      </div>
+
+      <div class="card" style="margin-top:12px">
+        <h3 style="margin:0 0 10px">Products List</h3>
+        <div id="productsTable"></div>
+      </div>
+
+      <hr/>
+
+      <div class="card">
+        <h3 style="margin:0 0 10px">Add Offer</h3>
+        <div class="grid">
+          <div><label>Title AR</label><input id="o_ar"></div>
+          <div><label>Title EN</label><input id="o_en"></div>
+          <div><label>Discount %</label><input id="o_disc" type="number"></div>
+          <div><label>Image</label><input id="o_img" type="file" accept="image/*" /><div class="muted" id="o_img_url"></div></div>
+        </div>
+        <label>Description AR</label><textarea id="o_desc_ar"></textarea>
+        <label>Description EN</label><textarea id="o_desc_en"></textarea>
+        <button class="btn primary" style="margin-top:10px" onclick="createOffer()">Save Offer</button>
+      </div>
+
+      <div class="card" style="margin-top:12px">
+        <h3 style="margin:0 0 10px">Offers List</h3>
+        <div id="offersTable"></div>
+      </div>
+
+      <hr/>
+
+      <div class="card">
+        <h3 style="margin:0 0 10px">Add Blog Post</h3>
+        <div class="grid">
+          <div><label>Slug</label><input id="b_slug" placeholder="unique-slug"></div>
+          <div><label>Image</label><input id="b_img" type="file" accept="image/*" /><div class="muted" id="b_img_url"></div></div>
+          <div><label>Title AR</label><input id="b_ar"></div>
+          <div><label>Title EN</label><input id="b_en"></div>
+          <div><label>Excerpt AR</label><input id="b_ex_ar"></div>
+          <div><label>Excerpt EN</label><input id="b_ex_en"></div>
+        </div>
+        <label>Content AR (HTML allowed)</label><textarea id="b_ct_ar" rows="6"></textarea>
+        <label>Content EN (HTML allowed)</label><textarea id="b_ct_en" rows="6"></textarea>
+        <button class="btn primary" style="margin-top:10px" onclick="createPost()">Save Post</button>
+      </div>
+
+      <div class="card" style="margin-top:12px">
+        <h3 style="margin:0 0 10px">Posts List</h3>
+        <div id="postsTable"></div>
+      </div>
+
+      <hr/>
+
+      <div class="card">
+        <h3 style="margin:0 0 10px">Pickup Orders</h3>
+        <div id="ordersTable"></div>
+      </div>
+
+      <div class="card" style="margin-top:12px">
+        <h3 style="margin:0 0 10px">Bookings</h3>
+        <div id="bookingsTable"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="/assets/js/admin.js"></script>
+</body>
+</html>

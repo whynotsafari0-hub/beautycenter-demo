@@ -1,0 +1,98 @@
+    <!doctype html>
+    <html lang="en" dir="ltr">
+    <head>
+      <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Contact | Beauty Center</title>
+  <meta name="description" content="Contact Beauty Center Sharm El Sheikh for booking and inquiries." />
+  <link rel="canonical" href="https://beautycenter-sharm.com/en/contact.html" />
+  <link rel="alternate" hreflang="ar" href="https://beautycenter-sharm.com/ar/ar/contact.html" />
+  <link rel="alternate" hreflang="en" href="https://beautycenter-sharm.com/en/en/contact.html" />
+  <link rel="icon" href="/favicon.svg" />
+  <link rel="stylesheet" href="/assets/css/style.css" />
+  <script id="jsonld" type="application/ld+json"></script>
+
+    </head>
+    <body>
+    <header class="top">
+      <div class="container nav">
+        <div class="row" style="gap:10px">
+          <img class="logoImg" src="/assets/img/logo.png" alt="Beauty Center logo" onerror="this.style.display='none'">
+          <div class="brand">Beauty Center</div>
+        </div>
+
+    <nav class="menu">
+      <a href="/en/index.html">Home</a>
+      <a href="/en/about.html">About</a>
+      <a href="/en/shop.html">Shop</a>
+      <a href="/en/offers.html">Offers</a>
+      <a href="/en/blog.html">Blog</a>
+      <a href="/en/contact.html">Contact</a>
+      <a class="btn" href="/ar/contact.html">AR</a>
+    </nav>
+
+        <a class="btn primary" href="/en/shop.html">Shop</a>
+      </div>
+    </header>
+
+    <main class="container" style="padding:16px 0">
+      <div class="card">
+  <h1 style="margin:0 0 8px">Contact</h1>
+  <p class="muted" style="margin:0;line-height:1.9">
+    Contact us for booking or inquiries. You can also visit us at the Old Market.
+  </p>
+</div>
+
+<div class="grid" style="margin-top:12px">
+  <div class="card">
+    <h3 style="margin:0 0 8px">Contact Details</h3>
+    <p class="muted" style="margin:0;line-height:1.9">
+      📍 <b id="siteAddress"></b><br/>
+      📞 <b id="sitePhone"></b><br/>
+      ✉️ <b id="siteEmail"></b>
+    </p>
+    <div class="row" style="justify-content:flex-start;margin-top:10px;flex-wrap:wrap">
+      <a class="btn" id="siteFacebook" target="_blank" rel="noopener">Facebook</a>
+      <a class="btn" id="siteInstagram" target="_blank" rel="noopener">Instagram</a>
+      <a class="btn primary" href="tel:01092807902">Call</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 style="margin:0 0 8px">Quick Message</h3>
+    <form id="msgForm">
+      <label>Name</label>
+      <input name="name" required />
+      <label style="margin-top:8px">Message</label>
+      <textarea name="message" required rows="5" placeholder="Write your message..."></textarea>
+      <button class="btn primary" style="margin-top:10px" type="submit">Send</button>
+      <p class="muted" id="msgRes" style="margin:10px 0 0">* Demo: opens WhatsApp automatically.</p>
+    </form>
+  </div>
+</div>
+
+    </main>
+
+    <footer class="footer">
+      <div class="container row" style="flex-wrap:wrap">
+        <div>📍 <span id="siteAddress"></span></div>
+        <div>📞 <span id="sitePhone"></span> — ✉️ <span id="siteEmail"></span></div>
+      </div>
+    </footer>
+
+    <script src="/assets/js/site.js"></script>
+    <script>loadSettings("en");</script>
+    <script>
+document.getElementById("msgForm").addEventListener("submit", (e)=>{
+  e.preventDefault();
+  const fd = new FormData(e.target);
+  const name = fd.get("name");
+  const message = fd.get("message");
+  const phone = "201092807902"; // whatsapp format
+  const text = encodeURIComponent(`${name}\n${message}`);
+  window.open(`https://wa.me/${phone}?text=${text}`, "_blank");
+});
+</script>
+
+    </body>
+    </html>

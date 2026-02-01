@@ -1,0 +1,98 @@
+    <!doctype html>
+    <html lang="ar" dir="rtl">
+    <head>
+      <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>اتصل بنا | Beauty Center</title>
+  <meta name="description" content="تواصل مع بيوتي سنتر شرم الشيخ للحجز والاستفسار." />
+  <link rel="canonical" href="https://beautycenter-sharm.com/ar/contact.html" />
+  <link rel="alternate" hreflang="ar" href="https://beautycenter-sharm.com/ar/ar/contact.html" />
+  <link rel="alternate" hreflang="en" href="https://beautycenter-sharm.com/en/en/contact.html" />
+  <link rel="icon" href="/favicon.svg" />
+  <link rel="stylesheet" href="/assets/css/style.css" />
+  <script id="jsonld" type="application/ld+json"></script>
+
+    </head>
+    <body>
+    <header class="top">
+      <div class="container nav">
+        <div class="row" style="gap:10px">
+          <img class="logoImg" src="/assets/img/logo.png" alt="Beauty Center logo" onerror="this.style.display='none'">
+          <div class="brand">Beauty Center</div>
+        </div>
+
+    <nav class="menu">
+      <a href="/ar/index.html">الرئيسية</a>
+      <a href="/ar/about.html">من نحن</a>
+      <a href="/ar/shop.html">المتجر</a>
+      <a href="/ar/offers.html">العروض</a>
+      <a href="/ar/blog.html">المدونة</a>
+      <a href="/ar/contact.html">اتصل بنا</a>
+      <a class="btn" href="/en/contact.html">EN</a>
+    </nav>
+
+        <a class="btn primary" href="/ar/shop.html">المتجر</a>
+      </div>
+    </header>
+
+    <main class="container" style="padding:16px 0">
+      <div class="card">
+  <h1 style="margin:0 0 8px">اتصل بنا</h1>
+  <p class="muted" style="margin:0;line-height:1.9">
+    تواصل معنا للحجز أو الاستفسار. يمكنك أيضًا زيارة المكان في السوق القديم.
+  </p>
+</div>
+
+<div class="grid" style="margin-top:12px">
+  <div class="card">
+    <h3 style="margin:0 0 8px">بيانات التواصل</h3>
+    <p class="muted" style="margin:0;line-height:1.9">
+      📍 <b id="siteAddress"></b><br/>
+      📞 <b id="sitePhone"></b><br/>
+      ✉️ <b id="siteEmail"></b>
+    </p>
+    <div class="row" style="justify-content:flex-start;margin-top:10px;flex-wrap:wrap">
+      <a class="btn" id="siteFacebook" target="_blank" rel="noopener">Facebook</a>
+      <a class="btn" id="siteInstagram" target="_blank" rel="noopener">Instagram</a>
+      <a class="btn primary" href="tel:01092807902">اتصال سريع</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 style="margin:0 0 8px">رسالة سريعة</h3>
+    <form id="msgForm">
+      <label>الاسم</label>
+      <input name="name" required />
+      <label style="margin-top:8px">الرسالة</label>
+      <textarea name="message" required rows="5" placeholder="اكتب رسالتك..."></textarea>
+      <button class="btn primary" style="margin-top:10px" type="submit">إرسال</button>
+      <p class="muted" id="msgRes" style="margin:10px 0 0">* (نسخة تجريبية) حالياً يتم فتح واتساب تلقائياً.</p>
+    </form>
+  </div>
+</div>
+
+    </main>
+
+    <footer class="footer">
+      <div class="container row" style="flex-wrap:wrap">
+        <div>📍 <span id="siteAddress"></span></div>
+        <div>📞 <span id="sitePhone"></span> — ✉️ <span id="siteEmail"></span></div>
+      </div>
+    </footer>
+
+    <script src="/assets/js/site.js"></script>
+    <script>loadSettings("ar");</script>
+    <script>
+document.getElementById("msgForm").addEventListener("submit", (e)=>{
+  e.preventDefault();
+  const fd = new FormData(e.target);
+  const name = fd.get("name");
+  const message = fd.get("message");
+  const phone = "201092807902"; // whatsapp format
+  const text = encodeURIComponent(`${name}\n${message}`);
+  window.open(`https://wa.me/${phone}?text=${text}`, "_blank");
+});
+</script>
+
+    </body>
+    </html>

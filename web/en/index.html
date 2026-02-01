@@ -1,0 +1,157 @@
+      <!doctype html>
+      <html lang="en" dir="ltr">
+      <head>
+        <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Beauty Center Sharm El Sheikh | Home</title>
+<meta name="description" content="Beauty services in Sharm El Sheikh + quick booking + offers + in-store pickup shop." />
+<link rel="canonical" href="https://beautycenter-sharm.com/en/index.html" />
+<link rel="alternate" hreflang="ar" href="https://beautycenter-sharm.com/ar/ar/index.html" />
+<link rel="alternate" hreflang="en" href="https://beautycenter-sharm.com/en/en/index.html" />
+<link rel="icon" href="/favicon.svg" />
+<link rel="stylesheet" href="/assets/css/style.css" />
+<script id="jsonld" type="application/ld+json"></script>
+
+      </head>
+      <body>
+      <header class="top">
+        <div class="container nav">
+          <div class="row" style="gap:10px">
+            <img class="logoImg" src="/assets/img/logo.png" alt="Beauty Center logo" onerror="this.style.display='none'">
+            <div class="brand">Beauty Center</div>
+          </div>
+
+  <nav class="menu">
+    <a href="/en/index.html">Home</a>
+    <a href="/en/about.html">About</a>
+    <a href="/en/shop.html">Shop</a>
+    <a href="/en/offers.html">Offers</a>
+    <a href="/en/blog.html">Blog</a>
+    <a href="/en/contact.html">Contact</a>
+    <a class="btn" href="/ar/index.html">AR</a>
+  </nav>
+
+          <a class="btn primary" href="#booking">Book Now</a>
+        </div>
+      </header>
+
+      <main class="container" style="padding:16px 0">
+        <section class="card hero">
+          <div class="row" style="flex-wrap:wrap">
+            <div>
+              <h1>Beauty Center — Sharm El Sheikh</h1>
+              <p>
+                Address: <b id="siteAddress"></b><br/>
+                📞 <b id="sitePhone"></b> — ✉️ <b id="siteEmail"></b>
+              </p>
+              <div class="row" style="justify-content:flex-start;margin-top:12px;flex-wrap:wrap">
+                <a class="btn" id="siteFacebook" target="_blank" rel="noopener">Facebook</a>
+                <a class="btn" id="siteInstagram" target="_blank" rel="noopener">Instagram</a>
+                <a class="btn primary" href="/en/shop.html">Shop (In-store pickup)</a>
+              </div>
+            </div>
+            <div class="chip">Pickup only — No shipping</div>
+          </div>
+        </section>
+
+        <div class="sectionTitle">
+          <h2>Services</h2>
+          <a class="btn" href="/en/about.html">View All</a>
+        </div>
+        <section class="cards" id="servicesGrid"></section>
+
+        <div class="sectionTitle" id="booking">
+          <h2>Booking</h2>
+          <span class="chip">Saved in system</span>
+        </div>
+        <section class="card">
+          <form id="bookingForm">
+            <div class="grid" style="margin-top:8px">
+              <div><label>Full Name</label><input name="full_name" required /></div>
+              <div><label>Phone</label><input name="phone" required /></div>
+              <div><label>Service</label><select name="service_id" id="serviceSelect" required></select></div>
+              <div><label>Date</label><input type="date" name="date" required /></div>
+              <div><label>Time</label><input type="time" name="time" required /></div>
+              <div><label>Note</label><input name="note" placeholder="Optional" /></div>
+            </div>
+            <button class="btn primary" style="margin-top:10px" type="submit">Confirm Booking</button>
+            <p class="muted" id="bookingMsg" style="margin:10px 0 0"></p>
+          </form>
+        </section>
+
+        <div class="sectionTitle">
+          <h2>Offers</h2>
+          <a class="btn" href="/en/offers.html">All Offers</a>
+        </div>
+        <section class="cards" id="offersGrid"></section>
+
+        <div class="sectionTitle">
+          <h2>Blog</h2>
+          <a class="btn" href="/en/blog.html">All Posts</a>
+        </div>
+        <section class="cards" id="postsGrid"></section>
+      </main>
+
+      <footer class="footer">
+        <div class="container row" style="flex-wrap:wrap">
+          <div>📍 <span id="siteAddress2"></span></div>
+          <div>© Beauty Center</div>
+        </div>
+      </footer>
+
+      <script src="/assets/js/site.js"></script>
+      <script>
+      async function getJSON(url){ return fetch(url).then(r=>r.json()); }
+      function cardHTML(img, title, desc, extra){
+        return `
+          <article class="card">
+            <div class="cardImg"><img src="${img}" alt="" loading="lazy" onerror="this.src='/assets/img/ph-blog.svg'"></div>
+            <h3 style="margin:10px 0 6px">${title}</h3>
+            <p class="muted" style="margin:0;line-height:1.8">${desc}</p>
+            ${extra ? `<div style="margin-top:10px">${extra}</div>` : ``}
+          </article>
+        `;
+      }
+      (async ()=>{
+        await loadSettings("en");
+        document.getElementById("siteAddress2").textContent = document.getElementById("siteAddress").textContent;
+
+        const sRes = await getJSON("/api/services");
+        const services = (sRes.ok ? sRes.data : []);
+        document.getElementById("servicesGrid").innerHTML = services.slice(0,6).map(x =>
+          cardHTML(x.image_url || "/assets/img/ph-skin.svg", x.title_en, x.desc_en, `<span class="chip">${x.price ? x.price + " EGP" : ""}</span>`)
+        ).join("");
+
+        const sel = document.getElementById("serviceSelect");
+        sel.innerHTML = `<option value="">Choose a service</option>` + services.map(x=>`<option value="${x.id}">${x.title_en}</option>`).join("");
+
+        const oRes = await getJSON("/api/offers");
+        const offers = (oRes.ok ? oRes.data : []);
+        document.getElementById("offersGrid").innerHTML = offers.slice(0,3).map(o =>
+          cardHTML(o.image_url || "/assets/img/ph-offer.svg", o.title_en, o.desc_en, o.discount_percent ? `<span class="chip">${o.discount_percent}% OFF</span>` : ``)
+        ).join("");
+
+        const pRes = await getJSON("/api/posts");
+        const posts = (pRes.ok ? pRes.data : []);
+        document.getElementById("postsGrid").innerHTML = posts.slice(0,3).map(p =>
+          cardHTML(p.image_url || "/assets/img/ph-blog.svg", p.title_en, p.excerpt_en || "", `<a class="btn" href="/en/blog.html?post=${encodeURIComponent(p.slug)}">Read More</a>`)
+        ).join("");
+
+        const form = document.getElementById("bookingForm");
+        form.addEventListener("submit", async (e)=>{
+          e.preventDefault();
+          const fd = new FormData(form);
+          const payload = Object.fromEntries(fd.entries());
+          payload.lang = "en";
+          const r = await fetch("/api/booking", {
+            method:"POST",
+            headers:{ "Content-Type":"application/json" },
+            body: JSON.stringify(payload)
+          }).then(r=>r.json());
+          document.getElementById("bookingMsg").textContent = r.ok ? "✅ Booking saved successfully" : "❌ Something went wrong";
+          if(r.ok) form.reset();
+        });
+      })();
+      </script>
+      </body>
+      </html>

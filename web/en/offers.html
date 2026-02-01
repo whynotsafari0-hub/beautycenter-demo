@@ -1,0 +1,88 @@
+    <!doctype html>
+    <html lang="en" dir="ltr">
+    <head>
+      <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Offers | Beauty Center</title>
+  <meta name="description" content="Latest offers at Beauty Center in Sharm El Sheikh." />
+  <link rel="canonical" href="https://beautycenter-sharm.com/en/offers.html" />
+  <link rel="alternate" hreflang="ar" href="https://beautycenter-sharm.com/ar/ar/offers.html" />
+  <link rel="alternate" hreflang="en" href="https://beautycenter-sharm.com/en/en/offers.html" />
+  <link rel="icon" href="/favicon.svg" />
+  <link rel="stylesheet" href="/assets/css/style.css" />
+  <script id="jsonld" type="application/ld+json"></script>
+
+    </head>
+    <body>
+    <header class="top">
+      <div class="container nav">
+        <div class="row" style="gap:10px">
+          <img class="logoImg" src="/assets/img/logo.png" alt="Beauty Center logo" onerror="this.style.display='none'">
+          <div class="brand">Beauty Center</div>
+        </div>
+
+    <nav class="menu">
+      <a href="/en/index.html">Home</a>
+      <a href="/en/about.html">About</a>
+      <a href="/en/shop.html">Shop</a>
+      <a href="/en/offers.html">Offers</a>
+      <a href="/en/blog.html">Blog</a>
+      <a href="/en/contact.html">Contact</a>
+      <a class="btn" href="/ar/offers.html">AR</a>
+    </nav>
+
+        <a class="btn primary" href="/en/shop.html">Shop</a>
+      </div>
+    </header>
+
+    <main class="container" style="padding:16px 0">
+      <div class="card">
+  <h1 style="margin:0 0 8px">Offers</h1>
+  <p class="muted" style="margin:0;line-height:1.9">All active offers appear here. Add/edit offers from the dashboard.</p>
+</div>
+
+<div class="sectionTitle">
+  <h2>Current Offers</h2>
+  <span class="chip">Dynamic</span>
+</div>
+<section class="cards" id="offersGrid"></section>
+
+    </main>
+
+    <footer class="footer">
+      <div class="container row" style="flex-wrap:wrap">
+        <div>📍 <span id="siteAddress"></span></div>
+        <div>📞 <span id="sitePhone"></span> — ✉️ <span id="siteEmail"></span></div>
+      </div>
+    </footer>
+
+    <script src="/assets/js/site.js"></script>
+    <script>loadSettings("en");</script>
+    <script>
+async function getJSON(url){ return fetch(url).then(r=>r.json()); }
+function cardHTML(img, title, desc, extra){
+  return `
+    <article class="card">
+      <div class="cardImg"><img src="${img}" alt="" loading="lazy" onerror="this.src='/assets/img/ph-offer.svg'"></div>
+      <h3 style="margin:10px 0 6px">${title}</h3>
+      <p class="muted" style="margin:0;line-height:1.8">${desc}</p>
+      ${extra ? `<div style="margin-top:10px">${extra}</div>` : ``}
+    </article>
+  `;
+}
+(async ()=>{
+  const res = await getJSON("/api/offers");
+  const offers = (res.ok ? res.data : []);
+  const lang = document.documentElement.lang === "ar" ? "ar" : "en";
+  document.getElementById("offersGrid").innerHTML = offers.map(o =>
+    cardHTML(o.image_url||"/assets/img/ph-offer.svg",
+      lang==="ar"?o.title_ar:o.title_en,
+      lang==="ar"?o.desc_ar:o.desc_en,
+      o.discount_percent ? `<span class="chip">${lang==="ar" ? "خصم" : "OFF"} ${o.discount_percent}%</span>` : ``
+    )
+  ).join("");
+})();
+</script>
+
+    </body>
+    </html>

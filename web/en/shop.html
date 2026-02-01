@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Shop | Beauty Center</title>
+  <meta name="description" content="In-salon products — order online and pick up & pay in-store only." />
+  <link rel="canonical" href="https://beautycenter-sharm.com/en/shop.html" />
+  <link rel="alternate" hreflang="ar" href="https://beautycenter-sharm.com/ar/ar/shop.html" />
+  <link rel="alternate" hreflang="en" href="https://beautycenter-sharm.com/en/en/shop.html" />
+  <link rel="icon" href="/favicon.svg" />
+  <link rel="stylesheet" href="/assets/css/style.css" />
+  <script id="jsonld" type="application/ld+json"></script>
+
+</head>
+<body>
+<header class="top">
+  <div class="container nav">
+    <div class="row" style="gap:10px">
+      <img class="logoImg" src="/assets/img/logo.png" alt="Beauty Center logo" onerror="this.style.display='none'">
+      <div class="brand">Beauty Center</div>
+    </div>
+
+    <nav class="menu">
+      <a href="/en/index.html">Home</a>
+      <a href="/en/about.html">About</a>
+      <a href="/en/shop.html">Shop</a>
+      <a href="/en/offers.html">Offers</a>
+      <a href="/en/blog.html">Blog</a>
+      <a href="/en/contact.html">Contact</a>
+      <a class="btn" href="/ar/shop.html">AR</a>
+    </nav>
+
+    <button class="btn primary" onclick="openOrder('en')">Order (<span id="cartCount">0</span>)</button>
+  </div>
+</header>
+<main class="container" style="padding:16px 0"><div class="card">
+  <div class="row">
+    <h1 style="margin:0">Shop</h1>
+    <span class="chip">Pickup in-store only</span>
+  </div>
+  <p class="muted" style="margin:8px 0 0">
+    Address: <span id="siteAddress"></span> — Phone: <span id="sitePhone"></span>
+  </p>
+</div>
+
+<section style="margin-top:12px">
+  <div class="grid3" id="productsGrid"></div>
+</section>
+
+<dialog id="orderModal" class="card">
+  <div class="row" style="margin-bottom:10px">
+    <b>Pickup Order</b>
+    <button class="btn" onclick="document.getElementById('orderModal').close()">Close</button>
+  </div>
+  <div id="orderBox"></div>
+</dialog>
+</main>
+<footer class="footer">
+  <div class="container row">
+    <div>
+      <div>📍 <span id="siteAddress"></span></div>
+      <div>📞 <span id="sitePhone"></span> — ✉️ <span id="siteEmail"></span></div>
+    </div>
+    <div class="row">
+      <a id="siteFacebook" class="btn" target="_blank" rel="noopener">Facebook</a>
+      <a id="siteInstagram" class="btn" target="_blank" rel="noopener">Instagram</a>
+    </div>
+  </div>
+</footer>
+<script src="/assets/js/site.js"></script>
+<script src="/assets/js/shop.js"></script>
+<script>
+(async ()=>{
+  await loadSettings("en");
+  await loadProducts();
+  renderProducts("en");
+  updateCartBadge();
+})();
+</script>
+
+</body>
+</html>

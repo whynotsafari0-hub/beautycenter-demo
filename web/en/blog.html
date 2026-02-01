@@ -1,0 +1,112 @@
+    <!doctype html>
+    <html lang="en" dir="ltr">
+    <head>
+      <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Blog | Beauty Center</title>
+  <meta name="description" content="Beauty Center blog: tips and articles." />
+  <link rel="canonical" href="https://beautycenter-sharm.com/en/blog.html" />
+  <link rel="alternate" hreflang="ar" href="https://beautycenter-sharm.com/ar/ar/blog.html" />
+  <link rel="alternate" hreflang="en" href="https://beautycenter-sharm.com/en/en/blog.html" />
+  <link rel="icon" href="/favicon.svg" />
+  <link rel="stylesheet" href="/assets/css/style.css" />
+  <script id="jsonld" type="application/ld+json"></script>
+
+    </head>
+    <body>
+    <header class="top">
+      <div class="container nav">
+        <div class="row" style="gap:10px">
+          <img class="logoImg" src="/assets/img/logo.png" alt="Beauty Center logo" onerror="this.style.display='none'">
+          <div class="brand">Beauty Center</div>
+        </div>
+
+    <nav class="menu">
+      <a href="/en/index.html">Home</a>
+      <a href="/en/about.html">About</a>
+      <a href="/en/shop.html">Shop</a>
+      <a href="/en/offers.html">Offers</a>
+      <a href="/en/blog.html">Blog</a>
+      <a href="/en/contact.html">Contact</a>
+      <a class="btn" href="/ar/blog.html">AR</a>
+    </nav>
+
+        <a class="btn primary" href="/en/shop.html">Shop</a>
+      </div>
+    </header>
+
+    <main class="container" style="padding:16px 0">
+      <div class="card">
+  <h1 style="margin:0 0 8px">Blog</h1>
+  <p class="muted" style="margin:0;line-height:1.9">Beauty tips & articles. Add posts from the dashboard.</p>
+</div>
+
+<section class="card" id="singlePost" style="display:none"></section>
+
+<div class="sectionTitle">
+  <h2>Latest Posts</h2>
+  <span class="chip">Dynamic</span>
+</div>
+<section class="cards" id="postsGrid"></section>
+
+    </main>
+
+    <footer class="footer">
+      <div class="container row" style="flex-wrap:wrap">
+        <div>📍 <span id="siteAddress"></span></div>
+        <div>📞 <span id="sitePhone"></span> — ✉️ <span id="siteEmail"></span></div>
+      </div>
+    </footer>
+
+    <script src="/assets/js/site.js"></script>
+    <script>loadSettings("en");</script>
+    <script>
+async function getJSON(url){ return fetch(url).then(r=>r.json()); }
+function qs(name){ return new URLSearchParams(location.search).get(name); }
+function cardHTML(img, title, desc, link){
+  return `
+    <article class="card">
+      <div class="cardImg"><img src="${img}" alt="" loading="lazy" onerror="this.src='/assets/img/ph-blog.svg'"></div>
+      <h3 style="margin:10px 0 6px">${title}</h3>
+      <p class="muted" style="margin:0;line-height:1.8">${desc}</p>
+      <div style="margin-top:10px">
+        <a class="btn" href="${link}">${document.documentElement.lang==="ar" ? "اقرأ المزيد" : "Read More"}</a>
+      </div>
+    </article>
+  `;
+}
+(async ()=>{
+  const lang = document.documentElement.lang === "ar" ? "ar" : "en";
+  const slug = qs("post");
+  if(slug){
+    const one = await getJSON("/api/posts/" + encodeURIComponent(slug));
+    if(one.ok){
+      const p = one.data;
+      const box = document.getElementById("singlePost");
+      box.style.display = "block";
+      box.innerHTML = `
+        <div class="row" style="flex-wrap:wrap">
+          <h2 style="margin:0">${lang==="ar"?p.title_ar:p.title_en}</h2>
+          <a class="btn" href="${lang==="ar"?"/ar/blog.html":"/en/blog.html"}">${lang==="ar"?"رجوع":"Back"}</a>
+        </div>
+        <div class="cardImg" style="margin-top:10px"><img src="${p.image_url||"/assets/img/ph-blog.svg"}" alt="" loading="lazy"></div>
+        <p class="muted" style="margin:10px 0 0;line-height:1.9">${lang==="ar"?(p.excerpt_ar||""):(p.excerpt_en||"")}</p>
+        <div style="margin-top:10px;line-height:1.9" class="muted">${lang==="ar"?(p.content_ar||""):(p.content_en||"")}</div>
+      `;
+    }
+  }
+
+  const res = await getJSON("/api/posts");
+  const posts = (res.ok ? res.data : []);
+  document.getElementById("postsGrid").innerHTML = posts.map(p =>
+    cardHTML(p.image_url||"/assets/img/ph-blog.svg",
+      lang==="ar"?p.title_ar:p.title_en,
+      lang==="ar"?p.excerpt_ar:p.excerpt_en,
+      (lang==="ar"?"/ar/blog.html?post=":"/en/blog.html?post=") + encodeURIComponent(p.slug)
+    )
+  ).join("");
+})();
+</script>
+
+    </body>
+    </html>
